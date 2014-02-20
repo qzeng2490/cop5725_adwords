@@ -3,4 +3,15 @@ Queries(qid:INTEGER, query:VARCHAR(400))
 Advertisers(advertiserId:INTEGER, budget:FLOAT, ctc:FLOAT) 
 Keywords(advertiserId:INTEGER, keyword:VARCHAR(100), bid:FLOAT)
 
-A query is a sequence of tokens typed on the search engine, e.g., “the best restaurant in Gainesville”. One token may appear multiple times in one query. The click-through rate (ctc) is the number of times a click is made on the advertisement divided by the number of total impressions (the times an advertisement was served). To make the output unique, we assume the ctc is constant for each advertiser. Also we assume the first x of the 100 impressions will be clicked and the rest 100 − x impressions will not be clicked if the ctc is x%(x will be an integer). The same simulation process repeats for the ads’ second 100 impressions, third 100 impressions and so on so forth. The Advertisers table stores the advertiserId and the corresponding budget. The budget is in the unit of dollars. The advertisers can’t bid if the
+A query is a sequence of tokens typed on the search engine, e.g., “the best restaurant in Gainesville”. 
+One token may appear multiple times in one query. The click-through rate (ctc) is the number of times a 
+click is made on the advertisement divided by the number of total impressions (the times an advertisement 
+was served). To make the output unique, we assume the ctc is constant for each advertiser. Also we assume 
+the first x of the 100 impressions will be clicked and the rest 100 − x impressions will not be clicked if 
+the ctc is x%(x will be an integer). The same simulation process repeats for the ads’ second 100 impressions, 
+third 100 impressions and so on so forth. The Advertisers table stores the advertiserId and the corresponding 
+budget. The budget is in the unit of dollars. The advertisers can’t bid if the balance is less than the 
+advertiser’s bid. Each advertiser must provide a set of keywords that best describe the ads to match the 
+search query. One advertiser has one and only one ads. The bid in the Keywords table is also in the unit 
+of dollars.
+
