@@ -15,3 +15,115 @@ advertiser’s bid. Each advertiser must provide a set of keywords that best des
 search query. One advertiser has one and only one ads. The bid in the Keywords table is also in the unit 
 of dollars.
 
+1.2 Matching Bids and Search Queries
+Each ads has a set of case insensitive keywords to match the query. Each keyword in the keyword set is associated
+with the price the advertiser would pay if the ads is clicked. The advertiser will bid the query with the sum of 
+the price for each matched keywords. You may need to tokenize the search query. For simplicity,the project assumes
+the delimiter to tokenize the query is the empty space ‘ ’.
+T ← matched tokens set(query, keywords) ; T contains no duplicate tokens bid(keywords, query) = 􏰀 Ti × bidi
+
+
+1.3 On-line Auction Algorithms to the AdWords Problem
+One advertiser bid one query iff the bid > 0 else the advertiser will not go into the auction process. Assuming that 
+only K ads can be displayed for each query. It is also possible that the K slots are not fulfilled if there are not 
+enough advertiser to bid the query.
+
+1.3.1 The Greedy Algorithm
+For each query, the greedy algorithm picks advertisers who has the highest bid for it. The Top-K advertisers who bid 
+the query and have the highest bids will be shown.
+Ad Rank = Bid
+
+1.3.2 The Balance Algorithm
+There is a simple improvement to the greedy algorithm. This algorithm, called the Balance Algorithm, assigns a query 
+to the Top-K advertisers who bid on the query and have the largest balance.
+Ad Rank = Balance
+1.3.3 The Generalized Balance Algorithm
+Suppose that a query q arrives, advertiser Ai has bid xi for this query. Also, suppose that fraction fi of the budget 
+of Ai is currently unspent. Let Ψi = xi(1 − e−fi ). Then assign q to the Top-K advertisers who bid the query and have 
+the highest Ψi.
+Ad Rank = Ψ
+1.3.4 Add the Ads Quality into Ranking
+The above auction algorithms don’t take the quality score into consideration which is a metric to determine how 
+relevant and useful your ad is to the user. The higher your quality score is, the better. In this project, we take 
+the Ads quality into consideration. we define the quality score as the product of ctc and cosine similarity between 
+query and advertiser
+
+keywords: The attribute vectors A and B are the term frequency vectors of the query and the advertiser keywords.
+QualityScore = ctc ∗ similarity where similarity = cos(θ) 
+The section 1.3.1, 1.3.2, 1.3.3 is just a general description of these algorithms. In our project, we need to implement
+a revised version of these algorithms which take the quality score into ranking. Finally, the Ad rank is redefined as 
+follows:
+The Greedy Algorithm Ad Rank = Bid × Quality Score
+The Balance Algorithm Ad Rank = Balance × Quality Score
+The Generalized Balance Algorithm Ad Rank = Ψ× Quality Score
+
+
+1.4 Charging Advertisers for Clicks:
+The advertiser will be charged iff the ads was clicked.
+first-price auction when a user clicks on an advertiser’s ad, the advertiser is charged the
+amount they bid. This policy is known as a first-price auction.
+
+second-price auction In reality, search engines use a more complicated system known as a second-price auction. 
+An advertiser for a search will pay the bid of the next highest bid advertiser who bid the query. The next highest 
+bid is the bid which is smaller than the current advertiser’s bid but closest to the current advertiser’s bid. 
+If the advertiser’s bid itself is the smallest, it will pay the price it bids in this case. It has been shown that 
+second-price auctions are less susceptible to being gamed by advertisers than first-price auctions and lead to higher 
+revenues for the search engine.
+
+1.5 Tasks
+There are 6 tasks you need to finish in this project:
+• Task 1: the greedy algorithm and the first price auction.
+• Task 2: the greedy algorithm and the second price auction.
+• Task 3: the balance algorithm and the first price auction.
+• Task 4: the balance algorithm and the second price auction.
+• Task 5: the generalized balance algorithm and the first price auction.
+• Task 6: the generalized balance algorithm and the second price auction.
+
+
+2 Input and Output
+You must exactly follow the input and output format described in the following subsections. If you fail to follow the 
+format, your program may not be able to parse the input file and the TAs’ grading script may not be able to interpret 
+your output. Also the input files, output files and your code files should be in the same directory. Don’t add any 
+extra file path except the file name to the path argument when program tries to read/write some files. For the purpose 
+of automated grading, the TAs intend to make the output unique. Let us know if any issue in the project that would to 
+lead nondeterministic results.
+
+
+2.1 Input
+There are four input files, namely Queries.dat, Advertisers.dat, Keywords.dat and system.in. We also provide sample 
+inputs and it may not be the same as the final dataset to test your code. The system.in contains one and only one test
+case for each task. The first line in the system.in contains the your credential to access the oracle database. I will
+replace your system.in with my system.in to test your code. That means I will use my cise oracle account to test your 
+code and you can assume nothing is already in the database. The following lines contains the corresponding parameters. 
+num ads (K in above context) is the maximum number of ads can be shown per query.
+username = myusername
+password = mypassword
+TASK1: num_ads = 4
+TASK2: num_ads = 3
+TASK3: num_ads = 2
+TASK4: num_ads = 5
+TASK5: num_ads = 2
+TASK6: num_ads = 3
+
+2.2 Output
+There is one output file for each task. Your program should generate six output files, namely, system.out.1,system.out.2,
+system.out.3,system.out.4,system.out.5 and system.out.6. The rank i is the ith slot in the ads section. The rank starts
+from 1. The balance is the amount of money left after this ads impression. The budget is same as what defined in table 
+Advertisers.
+Sample system.out.1 for TASK1:
+qid, rank, advertiserId, balance, budget
+Sample system.out.2 for TASK2:
+qid, rank, advertiserId, balance, budget
+Sample system.out.3 for TASK3:
+qid, rank, advertiserId, balance, budget
+Sample system.out.4 for TASK4:
+qid, rank, advertiserId, balance, budget
+Sample system.out.5 for TASK5:
+qid, rank, advertiserId, balance, budget
+Sample system.out.6 for TASK6:
+qid, rank, advertiserId, balance, budget
+
+
+2.3 How to Break Ties
+To make the output unique, you must break the tie according to the advertiserId in ascending order whenever necessary, which
+means the smaller the advertiserId, the higher the rank (rank 1 is the highest).
