@@ -2,8 +2,11 @@ cop5725_adwords
 ===============
 The data set consists of three database tables: (primary keys are underlined)
 Queries(qid:INTEGER, query:VARCHAR(400)) 
+
 Advertisers(advertiserId:INTEGER, budget:FLOAT, ctc:FLOAT) 
+
 Keywords(advertiserId:INTEGER, keyword:VARCHAR(100), bid:FLOAT)
+
 
 A query is a sequence of tokens typed on the search engine, e.g., “the best restaurant in Gainesville”. 
 One token may appear multiple times in one query. The click-through rate (ctc) is the number of times a 
